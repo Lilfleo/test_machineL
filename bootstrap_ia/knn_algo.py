@@ -30,10 +30,11 @@ class KnnOperateur:
             dist_sorted = dist.argsort()[:self.k]
             neigh_count = {}
             for idx in dist_sorted:
+                weight = 1 / (dist[idx] + 1e-10)
                 if self.Y_train[idx] in neigh_count:
-                    neigh_count[self.Y_train[idx]] += 1
+                    neigh_count[self.Y_train[idx]] += weight
                 else:
-                    neigh_count[self.Y_train[idx]] = 1
+                    neigh_count[self.Y_train[idx]] = weight
             sorted_neigh_count = sorted(neigh_count.items(), key=operator.itemgetter(1), reverse=True)
             predictions.append(sorted_neigh_count[0][0])
         return predictions
